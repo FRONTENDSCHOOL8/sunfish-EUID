@@ -1,16 +1,20 @@
-const plusButton = document.querySelector('#plusButton-container');
+import PocketBase from 'pocketbase';
+
+const pb = new PocketBase(import.meta.env.VITE_PB_URL);
+
 const plusButtonIcon = document.querySelector('#plusButton');
 const body = document.querySelector('body');
 const exchangeList = document.querySelector('#exchangeList');
 const heartContainer = document.querySelectorAll('.heartContainer');
-let clickCount = 0;
+const greatNum = document.querySelectorAll('.greatCount');
+let plusClickCount = 0;
 let isClick = false;
 let createCategory;
 
-function onClick(){
-  clickCount++;
+function show(){
+  plusClickCount++;
 
-  if(clickCount % 2 !== 0 ){
+  if(plusClickCount % 2 !== 0 ){
     body.style.background='rgba(0, 0, 0, 0.5)';
     plusButton.insertAdjacentHTML('beforebegin', /*html */
     `
@@ -44,20 +48,30 @@ function move(){
   window.location.href='/src/pages/exchange/exchangeDetail.html';
 }
 
-function stop(e){
+function great(e){
+  let greatCount = 0;
   e.stopPropagation();
   isClick = !isClick; 
+
   if(!isClick){
-    e.currentTarget.style.backgroundColor=''; 
+    greatNum.forEach(element => {
+      element.innerText = greatCount; 
+    });
+    e.currentTarget.classList.remove('bg-heart-full-icon');
+    e.currentTarget.classList.add('bg-heart-icon');
   } else {
-    e.currentTarget.style.backgroundColor='pink';
+    greatCount += 1; 
+    greatNum.forEach(element => {
+      element.innerText = greatCount; 
+    });
+    e.currentTarget.classList.add('bg-heart-full-icon');
+    e.currentTarget.classList.remove('bg-heart-icon');
   }
 }
 
-
 heartContainer.forEach((item) => {
-  item.addEventListener('click', stop);
+  item.addEventListener('click', great);
 })
-plusButton.addEventListener('click', onClick);
+plusButton.addEventListener('click', show);
 plusButtonIcon.addEventListener('click', toggle);
 exchangeList.addEventListener('click', move)
