@@ -1,3 +1,9 @@
+/**
+ * TODO: 왠지 모르게 위화감이 느껴지는 코드입니다. 다른 곳에서 그대로 가져오신것 같아요.
+ * @param a
+ * @param b
+ * @returns {*}
+ */
 function levenshtein(a, b) {
   const matrix = [];
   let i, j;
@@ -30,7 +36,9 @@ function levenshtein(a, b) {
 
 // 단어 추출 및 중복 제거
 const keywords = new Set();
-
+/**
+ * TODO: import가 없습니다. 동작을 안 할것 같은데요?
+ */
 resultDataList.forEach((item) => {
   const words = (item.title + ' ' + item.description).match(
     /[\w\uAC00-\uD7A3]+/g

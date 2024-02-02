@@ -45,6 +45,15 @@ async function methodInfo() {
 let warningMessage = null;
 const spell = getNode('#spell');
 
+/**
+ * TODO: 이럴 때는 폼 전체를 스키마 기반 벨리데이션 도구를 이용해서 검증하는 방식을 많이 사용합니다.
+ * 폼의 필드에서 blur, change 이벤트가 발생했을 때 폼 전체를 검증하는 식입니다.
+ * 폼은 보고서, 스키마 기반 벨리데이터는 보고서를 검토하는 역활을 맡습니다.
+ * 이 방식은 거의 루틴이 되어 있고, 다른 라이브러리들도 거의 같은 방식을 이용합니다.
+ * zod + react-hook-form 조합이 유명한데, 기술이 많이 성숙한 상태라 배울 가치가 있습니다.
+ * zod는 러닝커브가 좀 있습니다. 어려우면 yup을 사용해도 좋습니다.
+ * @param target
+ */
 function validation({ target }) {
   if (!checkAuth()) return;
   const { value } = target;
@@ -60,6 +69,7 @@ function validation({ target }) {
     if (contentName.value.length > 12) {
       contentName.value = contentName.value.slice(0, 12);
       warningMessage = document.createElement('span');
+      // TODO: 리액트로 구현할때는 에러메시지 표시만 담당하는 컴포넌트를 만들면 될 것입니다. 아마 zod 나 yup 만 사용해도 구현할 수 있을 거에요.
       warningMessage.textContent = `숫자는 12이하로 입력해주세요`;
       warningMessage.classList.add(
         'text-label-sm',
@@ -70,6 +80,7 @@ function validation({ target }) {
       spell.insertAdjacentElement('afterbegin', warningMessage);
     }
   } else if (!warningMessage) {
+    // TODO: 리액트로 구현할때는 invalid 때 표시하지 않는 방식으로 구현하면 되겠지요
     warningMessage = document.createElement('span');
     warningMessage.classList.add(
       'text-label-sm',
@@ -82,7 +93,7 @@ function validation({ target }) {
   }
 }
 
-async function change(value) {
+async function submit(value) {
   if (!checkAuth()) return;
   if (!pb || !pb.authStore || !pb.authStore.model) {
     console.log('pb.authStore.model is undefined');
@@ -104,7 +115,9 @@ async function change(value) {
 
 contentName.addEventListener('input', validation);
 prev.addEventListener('click', () => history.back());
+// TODO: 리액트 프로젝트를 할 때는 이 부분을 폼의 onSubmit 이벤트로 구현하세요.
 finish.addEventListener('click', () => {
+  // TODO: 벨리데이션을 처리하는 필터를 구현하면 되겠지요.[s]
   if (
     parseInt(contentName.value.length) > 12 ||
     contentName.value[0] === '0' ||
@@ -113,7 +126,8 @@ finish.addEventListener('click', () => {
   ) {
     return;
   }
-  change(contentName.value);
+  // TODO: 벨리데이션을 처리하는 필터를 구현하면 되겠지요.[e]
+  submit(contentName.value);
 });
 
 methodInfo();
