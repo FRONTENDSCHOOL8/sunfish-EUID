@@ -106,12 +106,32 @@ function createSkeletonTemplate() {
 </li>`.repeat(5);
 }
 
+const getMaxMemberMessage = ({ maxMember }) => {
+  if (maxMember === '제한없음') {
+    return maxMember;
+  }
+
+  return `${maxMember}명`;
+}
+
+const getGenderMessage = ({gender}) => {
+  if (gender === '누구나') {
+    return `${gender} 참여가능`
+  }
+
+  return `${gender}만 참여가능`;
+}
+
+const getAgeMessage = ({ age }) => {
+  if (age === '모든 연령') {
+      return age;
+  }
+
+  return `${age}대`;
+}
+
 function createTogetherTemplate(item) {
-  const { category, date, id, members, title, owner, created } = item;
-  let { maxMember, gender, age } = item;
-  maxMember = maxMember === '제한없음' ? maxMember : `${maxMember}명`;
-  gender = gender === '누구나' ? `${gender} 참여가능` : `${gender}만 참여가능`;
-  age = age === '모든 연령' ? age : `${age}대`;
+  const { category, date, id, members, title, created } = item;
   const template = /* html */ `
     <li  class="hover:bg-gray-100 ">
     <div
@@ -130,7 +150,7 @@ function createTogetherTemplate(item) {
       </a>
       <span
         class="pl-4 text-paragraph-sm font-normal text-gray-600 bg-people_full-icon bg-no-repeat bg-left"
-        >${age} ${gender}</span>
+        >${getAgeMessage(item)} ${getGenderMessage(item)}</span>
       <span
         class="pl-4 text-paragraph-sm font-normal text-gray-600 bg-calender-icon bg-no-repeat bg-left"
         >${new Date(date).toLocaleDateString()}</span>
@@ -139,7 +159,7 @@ function createTogetherTemplate(item) {
           >연희동 · ${convertTime(created)}</span>
         <span
           class="pl-4 text-paragraph-sm font-normal text-gray-600 bg-people-icon bg-no-repeat bg-left"
-          >${members.length}/${maxMember}</span>
+          >${members.length}/${getMaxMemberMessage(item)}</span>
       </div>
     </div>
     </li>
@@ -147,14 +167,20 @@ function createTogetherTemplate(item) {
 
   return template;
 }
+
+const getImgUrl = (item) => {
+  if (item.imgField.length === 0) {
+    return ''
+  }
+
+  return pb.files.getUrl(item, item.imgField[0], { thumb: '0x60' });
+}
+
 function createQnaTemplate(item) {
-  const { id, category, title, imgField, comments, views, created } = item;
+  const { id, category, title, views, created } = item;
   let { description } = item;
   description = description.replace(/</g, '&lt;').replace(/>/g, '&gt;');
-  const imgUrl =
-    imgField.length === 0
-      ? ''
-      : pb.files.getUrl(item, imgField[0], { thumb: '0x60' });
+  const imgUrl = getImgUrl(item)
 
   const template = /* html */ `
     <li class="hover:bg-gray-100 ">

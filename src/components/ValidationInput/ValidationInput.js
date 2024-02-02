@@ -13,7 +13,14 @@ import { getNode, getNodes } from '../../lib';
 // ];
 
 // 클로져를 사용해서 이벤트 바인딩?
-
+/**
+ * TODO: 좋은 시도입니다. 제네릭한 input을 구현하려고 하셨지만, 바닐라 자바스크립트로는 한계가 너무 명확했군요!
+ * react.js 처럼 100% 자바스크립트로만 구현하거나 webcomponent 등의 표준기술을 사용했다면 가능했을지도 모릅니다.
+ * 아래의 문서는 제가 요즘 연구했던 노트입니디.
+ * https://cinos81.notion.site/5d6305eae048489fafab69e900c9b104?pvs=4
+ * @param validConfig
+ * @returns {[void,{state: boolean}]}
+ */
 const initInput = (validConfig) => {
   const inputboxList = getNodes('.valid-input-box');
 
@@ -51,6 +58,7 @@ const initInput = (validConfig) => {
   };
 
   const inputList = [];
+  // TODO: Array.prototype.forEach 는 undefined를 반환하니 의미가 없지 않나요?
   return [
     inputboxList.forEach((inputbox, idx) => {
       const {

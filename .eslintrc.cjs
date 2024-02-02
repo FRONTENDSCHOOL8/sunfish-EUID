@@ -19,6 +19,8 @@ module.exports = {
     ecmaVersion: "latest",
   },
   rules: {
+    // 삼항연산자 사용 금지
+    'no-ternary': 'error',
     "no-var": "error",
     "no-unreachable": "error",
     "max-depth": ["error", { max: 2 }],

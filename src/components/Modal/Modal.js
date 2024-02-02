@@ -1,10 +1,11 @@
 /**
  * 원버튼 모달 생성하기
- * @param {Object} obj
- * @param {String} obj.title 모달 제목
- * @param {String} obj.desc 모달 설명
- * @param {String} obj.buttonText 버튼 텍스트
- * @returns {HTMLDialogElement & HTMLButtonElement & HTMLButtonElement}
+ * @param {{
+ *   title: string
+ *   desc: string
+ *   buttonText: string
+ * }} obj // TODO: 이렇게 선언하는 방법도 있습니다.
+ * @returns {Element[]} // TODO: 타입스크립트를 사용할때는 반환값을 추론으로 남기는 것이 테크닉입니다.
  */
 export const createModal1Btn = ({ title, desc, buttonText = '확인' }) => {
   const array = new Uint8Array(1);
@@ -38,6 +39,8 @@ export const createModal1Btn = ({ title, desc, buttonText = '확인' }) => {
       'animationend',
       () => {
         modal.removeAttribute('closing', '');
+        // TODO: 무제한으로 만들어지는 문제가 있으니 스스로를 파괴하는 코드가 필요한것 같습니다.
+        modal.remove();
         modal.close();
       },
       { once: true }
@@ -48,12 +51,12 @@ export const createModal1Btn = ({ title, desc, buttonText = '확인' }) => {
 };
 /**
  * 투 버튼 모달 생성하기
- * @param {Object} obj
- * @param {String} obj.title 모달 제목
- * @param {String} obj.desc 모달 설명
- * @param {String} obj.cancelText 취소 버튼 텍스트
- * @param {String} obj.submitText 승인 버튼 텍스트
- * @returns {HTMLDialogElement & HTMLButtonElement}
+ * @param {{
+ *   title: string
+ *   desc: string
+ *   cancelText: string
+ *   submitText: string
+ * }} obj
  */
 export const createModal2Btn = ({
   title,
@@ -98,6 +101,8 @@ export const createModal2Btn = ({
       'animationend',
       () => {
         modal.removeAttribute('closing', '');
+        // TODO: 무제한으로 만들어지는 문제가 있으니 스스로를 파괴하는 코드가 필요한것 같습니다.
+        modal.remove();
         modal.close();
       },
       { once: true }
@@ -109,10 +114,8 @@ export const createModal2Btn = ({
 
 /**
  * 버튼x 자동제거 모달 생성하기
- * @param {Object} obj
- * @param {String} obj.title 모달 제목
- * @param {Function} obj.callback 콜백함수
- * @returns {HTMLDialogElement & HTMLButtonElement}
+ * @param {string} title 모달 제목
+ * @param {number} limit 지연시간
  */
 export const createAlertModal = (title, limit = 1500) => {
   const array = new Uint8Array(1);
@@ -135,6 +138,8 @@ export const createAlertModal = (title, limit = 1500) => {
       'animationend',
       () => {
         modal.removeAttribute('closing', '');
+        // TODO: 무제한으로 만들어지는 문제가 있으니 스스로를 파괴하는 코드가 필요한것 같습니다.
+        modal.remove();
         modal.close();
       },
       { once: true }

@@ -45,6 +45,15 @@ async function methodInfo() {
 let warningMessage = null;
 const spell = getNode('#spell');
 
+/**
+ * TODO: 이럴 때는 폼 전체를 스키마 기반 벨리데이션 도구를 이용해서 검증하는 방식을 많이 사용합니다.
+ * 폼의 필드에서 blur, change 이벤트가 발생했을 때 폼 전체를 검증하는 식입니다.
+ * 폼은 보고서, 스키마 기반 벨리데이터는 보고서를 검토하는 역활을 맡습니다.
+ * 이 방식은 거의 루틴이 되어 있고, 다른 라이브러리들도 거의 같은 방식을 이용합니다.
+ * zod + react-hook-form 조합이 유명한데, 기술이 많이 성숙한 상태라 배울 가치가 있습니다.
+ * zod는 러닝커브가 좀 있습니다. 어려우면 yup을 사용해도 좋습니다.
+ * @param target
+ */
 function validation({ target }) {
   if (!checkAuth()) return;
   const { value } = target;
