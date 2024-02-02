@@ -69,6 +69,7 @@ function validation({ target }) {
     if (contentName.value.length > 12) {
       contentName.value = contentName.value.slice(0, 12);
       warningMessage = document.createElement('span');
+      // TODO: 리액트로 구현할때는 에러메시지 표시만 담당하는 컴포넌트를 만들면 될 것입니다. 아마 zod 나 yup 만 사용해도 구현할 수 있을 거에요.
       warningMessage.textContent = `숫자는 12이하로 입력해주세요`;
       warningMessage.classList.add(
         'text-label-sm',
@@ -79,6 +80,7 @@ function validation({ target }) {
       spell.insertAdjacentElement('afterbegin', warningMessage);
     }
   } else if (!warningMessage) {
+    // TODO: 리액트로 구현할때는 invalid 때 표시하지 않는 방식으로 구현하면 되겠지요
     warningMessage = document.createElement('span');
     warningMessage.classList.add(
       'text-label-sm',
@@ -91,7 +93,7 @@ function validation({ target }) {
   }
 }
 
-async function change(value) {
+async function submit(value) {
   if (!checkAuth()) return;
   if (!pb || !pb.authStore || !pb.authStore.model) {
     console.log('pb.authStore.model is undefined');
@@ -113,7 +115,9 @@ async function change(value) {
 
 contentName.addEventListener('input', validation);
 prev.addEventListener('click', () => history.back());
+// TODO: 리액트 프로젝트를 할 때는 이 부분을 폼의 onSubmit 이벤트로 구현하세요.
 finish.addEventListener('click', () => {
+  // TODO: 벨리데이션을 처리하는 필터를 구현하면 되겠지요.[s]
   if (
     parseInt(contentName.value.length) > 12 ||
     contentName.value[0] === '0' ||
@@ -122,7 +126,8 @@ finish.addEventListener('click', () => {
   ) {
     return;
   }
-  change(contentName.value);
+  // TODO: 벨리데이션을 처리하는 필터를 구현하면 되겠지요.[e]
+  submit(contentName.value);
 });
 
 methodInfo();
